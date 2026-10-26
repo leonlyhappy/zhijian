@@ -212,13 +212,13 @@ function ProjectCard({ project, onOpenDetail }) {
   const stage = project.completed ? "已完成" : ["选词中", "诊断中", "提案中", "信源规划中", "创作中", "统计中"][project.phase];
   return <article className="geo-project-card" aria-label={project.name}>
     <header className="geo-project-card-top"><span>{nameParts.length ? brand : "GEO 项目"}</span><span className="geo-project-stage">{project.completed ? <CheckCircle size={14} weight="fill" /> : <i />}{stage}</span></header>
-    <h2><button onClick={() => onOpenDetail(project.id)}>{title}</button></h2>
+    <h2><button type="button" aria-label={`查看项目：${project.name}`} onClick={() => onOpenDetail(project.id)}>{title}</button></h2>
     <p className="geo-project-keyword"><span>关键词</span><strong>{project.keyword}</strong><small>· 共 {project.keywordCount} 个</small></p>
     <dl className="geo-project-metrics">
       <div><dd><strong>{project.content[0]}</strong><span>/ {project.content[1]}</span><small>篇</small></dd><dt>文章 · 已创建 / 计划</dt></div>
       <div><dd>{project.media[1] > 0 ? <><strong>{project.media[0]}</strong><span>/ {project.media[1]}</span><small>家</small></> : <strong>—</strong>}</dd><dt>{project.media[1] > 0 ? "媒体 · 已投放 / 计划" : "媒体 · 计划待设置"}</dt></div>
     </dl>
-    <footer className="geo-project-card-bottom"><div><p><ClockCountdown size={15} /><time dateTime={`2026-${project.updated.replace(" ", "T")}`}>{project.updated} 更新</time></p><small>订单 {project.order}</small></div><button onClick={() => onOpenDetail(project.id)}>查看项目<ArrowUp size={15} /></button></footer>
+    <footer className="geo-project-card-bottom"><div><p><ClockCountdown size={15} /><time dateTime={`2026-${project.updated.replace(" ", "T")}`}>{project.updated} 更新</time></p><small>订单 {project.order}</small></div><span className="geo-project-open" aria-hidden="true">查看项目<ArrowUp size={15} /></span></footer>
   </article>;
 }
 

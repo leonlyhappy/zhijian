@@ -1,36 +1,44 @@
 .project-page.geo-project-list { min-width: 0; background: #f6f9f7; color: #203a31; }
-.geo-project-list .page-heading { flex-wrap: wrap; gap: 20px; margin-bottom: 24px; }
+.geo-project-list .page-heading { flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
 .geo-project-list .heading-actions { flex-wrap: wrap; }
-.geo-project-list .geo-project-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-.geo-project-list .geo-project-card { min-width: 0; padding: 24px; background: #fff; border: 1px solid #e3ece7; border-radius: 12px; transition: border-color .18s ease; }
-.geo-project-list .geo-project-card:hover { border-color: #b0d2c3; }
+.geo-project-list .geo-project-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+.geo-project-list .geo-project-card { min-width: 0; position: relative; isolation: isolate; display: flex; flex-direction: column; padding: 18px; background: #fff; border: 1px solid #e3ece7; border-radius: 10px; transition: transform .2s cubic-bezier(.2,.7,.3,1), border-color .2s ease, box-shadow .2s ease; }
+.geo-project-list .geo-project-card:focus-within { outline: 2px solid #23856b; outline-offset: 3px; border-color: #5ca78b; }
+@media (hover: hover) and (pointer: fine) {
+  .geo-project-list .geo-project-card:hover { transform: translateY(-4px); border-color: #5ca78b; box-shadow: 0 10px 24px rgba(24, 91, 66, .11), 0 0 0 1px rgba(35, 133, 107, .12); }
+  .geo-project-list .geo-project-card:hover h2 button { color: #147d5f; }
+  .geo-project-list .geo-project-card:active { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(24, 91, 66, .09); }
+}
 .geo-project-list .geo-project-card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #7d8d85; font-size: 13px; }
 .geo-project-list .geo-project-stage { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; color: #147d5f; font-size: 13px; font-weight: 600; }
 .geo-project-list .geo-project-stage i { width: 7px; height: 7px; background: currentColor; border-radius: 50%; }
-.geo-project-list .geo-project-card h2 { margin: 11px 0 8px; font-size: 20px; font-weight: 650; line-height: 1.45; letter-spacing: -.025em; }
-.geo-project-list .geo-project-card h2 button { padding: 0; border: 0; background: transparent; color: #19342b; font: inherit; text-align: left; cursor: pointer; }
+.geo-project-list .geo-project-card h2 { margin: 8px 0 6px; font-size: 18px; font-weight: 650; line-height: 1.45; letter-spacing: -.025em; }
+.geo-project-list .geo-project-card h2 button { padding: 0; border: 0; background: transparent; color: #19342b; font: inherit; text-align: left; cursor: pointer; transition: color .2s ease; }
+.geo-project-list .geo-project-card h2 button::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: 10px; }
+.geo-project-list .geo-project-card h2 button:focus-visible { outline: none; }
 .geo-project-list .geo-project-card h2 button:hover { color: #147d5f; }
 .geo-project-list .geo-project-keyword { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 0; font-size: 13px; line-height: 1.65; }
 .geo-project-list .geo-project-keyword > span, .geo-project-list .geo-project-keyword small { color: #8a978f; font-size: 12px; }
 .geo-project-list .geo-project-keyword strong { color: #4d6359; font-weight: 500; overflow-wrap: anywhere; }
-.geo-project-list .geo-project-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 25px 0 22px; }
+.geo-project-list .geo-project-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0 14px; }
 .geo-project-list .geo-project-metrics dd { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; margin: 0 0 4px; font-variant-numeric: tabular-nums; }
-.geo-project-list .geo-project-metrics dd strong { color: #20382e; font-size: 27px; font-weight: 600; line-height: 1.3; letter-spacing: -.035em; }
-.geo-project-list .geo-project-metrics dd span { color: #87968d; font-size: 18px; }
+.geo-project-list .geo-project-metrics dd strong { color: #20382e; font-size: 25px; font-weight: 600; line-height: 1.3; letter-spacing: -.035em; }
+.geo-project-list .geo-project-metrics dd span { color: #87968d; font-size: 16px; }
 .geo-project-list .geo-project-metrics dd small { color: #87968d; font-size: 12px; }
 .geo-project-list .geo-project-metrics dt { color: #8a978f; font-size: 12px; line-height: 1.6; }
-.geo-project-list .geo-project-card-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 15px; border-top: 1px solid #edf2ef; }
+.geo-project-list .geo-project-card-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid #edf2ef; }
 .geo-project-list .geo-project-card-bottom p { display: flex; align-items: center; gap: 7px; margin: 0 0 4px; color: #7c8c82; font-size: 12px; font-variant-numeric: tabular-nums; }
 .geo-project-list .geo-project-card-bottom small { display: block; color: #a0aca5; font-size: 11px; font-variant-numeric: tabular-nums; }
-.geo-project-list .geo-project-card-bottom button { display: inline-flex; align-items: center; gap: 7px; padding: 6px 0; background: transparent; border: 0; color: #147d5f; font-size: 12px; font-weight: 600; cursor: pointer; }
-.geo-project-list .geo-project-card-bottom button svg { transform: rotate(45deg); }
-.geo-project-list .geo-project-card-bottom button:hover { color: #084e3a; }
+.geo-project-list .geo-project-open { display: inline-flex; align-items: center; gap: 7px; padding: 6px 0; color: #147d5f; font-size: 12px; font-weight: 600; }
+.geo-project-list .geo-project-open svg { transform: rotate(45deg); }
 .geo-project-list .geo-project-empty { padding: 70px 24px; color: #829188; text-align: center; }
 .geo-project-list .table-footer { margin-top: 20px; }
-@media (max-width: 1200px) { .geo-project-list .geo-project-card-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .geo-project-list .geo-project-card, .geo-project-list .geo-project-card h2 button { transition: none; }
+  .geo-project-list .geo-project-card:hover, .geo-project-list .geo-project-card:active { transform: none; }
+}
 @media (max-width: 640px) {
   .project-page.geo-project-list { padding: 20px 16px; }
-  .geo-project-list .geo-project-card { padding: 20px; }
   .geo-project-list .search-control { max-width: 100%; }
   .geo-project-list .search-control input { width: min(250px, 55vw); }
 }
