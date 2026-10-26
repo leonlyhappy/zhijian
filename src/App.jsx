@@ -1,3 +1,5 @@
+import { GeoAssistant } from "./GeoAssistant.jsx";
+import { WorkspaceBrand } from "./WorkspaceBrand.jsx";
 import "./project-cards.css";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
@@ -1308,37 +1310,6 @@ function getAssistantReply(question, context) {
   return `我会结合当前的“${context.label}”页面回答。你可以告诉我具体想了解的数据、操作或目标，我会直接给出下一步。`;
 }
 
-function GeoAssistant({ context, messages, input, typing, collapsed, onToggleCollapsed, onInputChange, onSend }) {
-  const messageAreaRef = useRef(null);
-  useEffect(() => {
-    const area = messageAreaRef.current;
-    if (area) area.scrollTo({ top: area.scrollHeight, behavior: "smooth" });
-  }, [messages, typing]);
-  const submit = (event) => { event.preventDefault(); onSend(input); };
-  return <aside className={cx("geo-assistant", collapsed && "collapsed")} aria-label="GEO全局对话助手小智">
-    <div className="assistant-profile">
-      <span className="xiaozhi-avatar"><Robot size={25} weight="duotone" /><i /></span>
-      <div><strong>小智</strong><span><i />GEO 智能助手</span><span className="assistant-context">{context.label}</span></div>
-      <button className="assistant-collapse-button" onClick={onToggleCollapsed} aria-label={collapsed ? "展开小智" : "收起小智"} title={collapsed ? "展开小智" : "收起小智"}>{collapsed ? <CaretRight size={16} /> : <CaretLeft size={16} />}</button>
-    </div>
-    {!collapsed ? <><div className="assistant-message-area" ref={messageAreaRef} aria-live="polite">
-      <div className="assistant-daymark"><span>本次对话</span></div>
-      {messages.map((message) => <div className={cx("assistant-message", message.role, message.kind === "context" && "context-message")} key={message.id}>
-        {message.role === "assistant" ? <span className="message-avatar"><Robot size={14} weight="duotone" /></span> : null}
-        <div className="message-bubble">{message.text}</div>
-      </div>)}
-      {typing ? <div className="assistant-message assistant"><span className="message-avatar"><Robot size={14} /></span><div className="message-bubble typing-bubble"><i /><i /><i /></div></div> : null}
-    </div>
-    <div className="assistant-composer">
-      <div className="quick-question-title"><Sparkle size={13} weight="fill" />你可以这样问</div>
-      <div className="assistant-chips">{context.chips.map((chip) => <button type="button" onClick={() => onSend(chip)} key={chip}>{chip}</button>)}</div>
-      <form className="assistant-input-box" onSubmit={submit}>
-        <textarea value={input} onChange={(event) => onInputChange(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); onSend(input); } }} rows="2" placeholder="问小智任何 GEO 问题…" />
-        <div><span>Enter 发送</span><button type="submit" disabled={!input.trim()} aria-label="发送消息"><PaperPlaneTilt size={16} weight="fill" /></button></div>
-      </form>
-    </div></> : null}
-  </aside>;
-}
 
 export function App() {
   const [primary, setPrimary] = useState("首页"); const [secondary, setSecondary] = useState("项目");
@@ -1346,17 +1317,11 @@ export function App() {
   const [projectView, setProjectView] = useState("list");
   const [projectId, setProjectId] = useState(1); const [selectedMedia, setSelectedMedia] = useState(new Set([1, 2, 3])); const [toast, setToast] = useState("");
   const [managementScope, setManagementScope] = useState(null);
-  const [assistantMessages, setAssistantMessages] = useState([createChatMessage("assistant", "你好，我是小智。你在 GEO 工作台里有什么问题，都可以直接问我。")]);
+  const [assistantMessages, setAssistantMessages] = useState([]);
   const [assistantInput, setAssistantInput] = useState("");
   const [assistantTyping, setAssistantTyping] = useState(false);
   const [assistantCollapsed, setAssistantCollapsed] = useState(true);
   const assistantContext = useMemo(() => getAssistantContext(secondary, tertiary, projectView, projectId), [secondary, tertiary, projectView, projectId]);
-  const lastAssistantContext = useRef("");
-  useEffect(() => {
-    if (primary !== "GEO" || lastAssistantContext.current === assistantContext.key) return;
-    lastAssistantContext.current = assistantContext.key;
-    setAssistantMessages((current) => [...current, createChatMessage("assistant", assistantContext.prompt, "context")].slice(-40));
-  }, [primary, assistantContext]);
   const notify = (message) => { setToast(message); window.clearTimeout(window.__zjToastTimer); window.__zjToastTimer = window.setTimeout(() => setToast(""), 2400); };
   const switchTertiary = (item) => setTertiary((current) => ({ ...current, [secondary]: item }));
   const viewStats = (id) => { setProjectId(id); setManagementScope(null); setSecondary("统计"); setTertiary((current) => ({ ...current, 统计: "项目概览" })); };
@@ -1381,7 +1346,7 @@ export function App() {
       setAssistantTyping(false);
     }, 420);
   };
-  const HeaderActions = () => <div className="top-actions"><button className="icon-button top-notification" aria-label="通知" onClick={() => notify("暂无新的通知")}><Bell size={19} /><i /></button><button className="user-account" aria-label="用户账户" onClick={() => notify("已打开个人账户菜单")}><span className="avatar">ZJ</span><span>张景</span><CaretDown size={13} /></button><button className="team-switcher"><Buildings size={17} />运营团队<CaretDown size={13} /></button></div>;
+  const HeaderActions = () => <WorkspaceBrand onHome={() => setPrimary("首页")} assistant={primary === "GEO" ? { expanded: !assistantCollapsed, onToggle: () => setAssistantCollapsed((current) => !current) } : null} />;
   let content;
   if (primary === "首页") content = <HomePage notify={notify} onNavigate={setPrimary} />;
   else if (primary !== "GEO") content = <EmptyStub title={primary} />;

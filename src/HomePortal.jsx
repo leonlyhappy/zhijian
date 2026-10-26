@@ -1,3 +1,4 @@
+import { WorkspaceBrand } from "./WorkspaceBrand.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft, ArrowRight, ArrowSquareOut, Books, CalendarBlank, CaretLeft, CaretRight,
@@ -384,7 +385,7 @@ export function HomePortal({ notify, onNavigate }) {
   return <section className="home-shell light only-light harbor-home home-portal">
     <header className="secondary-bar home-portal-topbar">
       <nav className="home-primary-tabs" aria-label="首页导航">{HOME_TABS.map((tab) => { const TabIcon = tab.icon; return <button className={activeTab === tab.id ? "active" : ""} onClick={() => setActiveTab(tab.id)} key={tab.id}><TabIcon size={17} /><span>{tab.label}</span></button>; })}</nav>
-      <HeaderActions notify={notify} />
+      <WorkspaceBrand onHome={() => setActiveTab("news")} />
     </header>
     <main className="home-portal-content">
       {activeTab === "news" ? <NewsPage notify={notify} /> : null}
