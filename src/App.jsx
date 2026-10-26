@@ -1,3 +1,4 @@
+import "./project-cards.css";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Article, ArrowDown, ArrowLeft, ArrowRight, ArrowSquareOut, ArrowUp, At, Bell, Buildings, CalendarBlank, CaretDown, CaretLeft,
@@ -205,74 +206,35 @@ function getProjectStageLabel(project) {
   return project.completed ? "已完成" : STAGES[project.phase];
 }
 
-function ProjectCardTimeline({ phase, completed }) {
-  const stageLabel = completed ? "已完成" : STAGES[phase];
-  return <div className="project-card-timeline" aria-label={completed ? `项目${STAGES.length}个环节已全部完成` : `项目当前位于第 ${phase + 1} 个环节：${stageLabel}`}>
-    <div className="card-timeline-heading"><span>项目进展</span><strong>{stageLabel}</strong><small>{completed ? `${STAGES.length}/${STAGES.length} 环节已完成` : `第 ${phase + 1}/${STAGES.length} 环节`}</small></div>
-    <div className="card-timeline-track">{STAGES.map((stage, index) => {
-      const done = completed || index < phase;
-      return <div className={cx("card-timeline-step", done && "done", index === phase && "current")} key={stage}><span>{done ? <Check size={10} weight="bold" /> : index + 1}</span><small>{stage}</small></div>;
-    })}</div>
-  </div>;
-}
-
-function ProjectCard({ project, onOpenDetail, onViewStats }) {
-  const keywords = getProjectKeywords(project);
-  const visibleKeywords = keywords.slice(0, 3);
-  const openProject = () => onOpenDetail(project.id);
-  return <article className="project-card">
-    <button className="project-card-hit" aria-label={`查看项目：${project.name}`} onClick={openProject} />
-    <header className="project-card-header">
-      <div><h2>{project.name}</h2><p>订单号：{project.order}</p></div>
-      <span className={cx("project-stage-badge", `stage-${project.phase}`)}><i />{getProjectStageLabel(project)}</span>
-    </header>
-    <section className="project-keyword-panel"><header><span><Target size={16} />关键词</span><strong>共 {project.keywordCount} 个</strong></header><div className="project-keyword-tags">{visibleKeywords.map((keyword) => <span title={keyword} key={keyword}>{keyword}</span>)}{keywords.length > visibleKeywords.length ? <span className="keyword-more">+{keywords.length - visibleKeywords.length}</span> : null}</div></section>
-    <div className="project-card-counts">
-      <div><span className="project-count-icon"><FileText size={17} /></span><span>已创建文章</span><strong>{project.content[0]}<small>篇</small></strong></div>
-      <div><span className="project-count-icon"><PaperPlaneTilt size={17} /></span><span>投放媒体</span><strong>{project.media[0]}<small>家</small></strong></div>
-    </div>
-    <ProjectCardTimeline phase={project.phase} completed={project.completed} />
-    <footer className="project-card-footer">{project.completed ? <button className="ghost-button project-stats-button" onClick={() => onViewStats(project.id)}><ChartLineUp size={15} />查看统计</button> : <span />}<button className="text-button project-open-button" onClick={openProject}>查看项目<ArrowRight size={14} /></button></footer>
+function ProjectCard({ project, onOpenDetail }) {
+  const [brand, ...nameParts] = project.name.split(" · ");
+  const title = nameParts.join(" · ") || brand;
+  const stage = project.completed ? "已完成" : ["选词中", "诊断中", "提案中", "信源规划中", "创作中", "统计中"][project.phase];
+  return <article className="geo-project-card" aria-label={project.name}>
+    <header className="geo-project-card-top"><span>{nameParts.length ? brand : "GEO 项目"}</span><span className="geo-project-stage">{project.completed ? <CheckCircle size={14} weight="fill" /> : <i />}{stage}</span></header>
+    <h2><button onClick={() => onOpenDetail(project.id)}>{title}</button></h2>
+    <p className="geo-project-keyword"><span>关键词</span><strong>{project.keyword}</strong><small>· 共 {project.keywordCount} 个</small></p>
+    <dl className="geo-project-metrics">
+      <div><dd><strong>{project.content[0]}</strong><span>/ {project.content[1]}</span><small>篇</small></dd><dt>文章 · 已创建 / 计划</dt></div>
+      <div><dd>{project.media[1] > 0 ? <><strong>{project.media[0]}</strong><span>/ {project.media[1]}</span><small>家</small></> : <strong>—</strong>}</dd><dt>{project.media[1] > 0 ? "媒体 · 已投放 / 计划" : "媒体 · 计划待设置"}</dt></div>
+    </dl>
+    <footer className="geo-project-card-bottom"><div><p><ClockCountdown size={15} /><time dateTime={`2026-${project.updated.replace(" ", "T")}`}>{project.updated} 更新</time></p><small>订单 {project.order}</small></div><button onClick={() => onOpenDetail(project.id)}>查看项目<ArrowUp size={15} /></button></footer>
   </article>;
-}
-
-function ProjectTableTimeline({ project }) {
-  const stageLabel = getProjectStageLabel(project);
-  return <div className="project-table-timeline" aria-label={project.completed ? `项目${STAGES.length}个环节已全部完成` : `项目当前位于第 ${project.phase + 1} 个环节：${stageLabel}`}>
-    <div className="table-timeline-track">{STAGES.map((stage, index) => {
-      const done = project.completed || index < project.phase;
-      return <div className={cx("table-timeline-step", done && "done", !project.completed && index === project.phase && "current")} key={stage}><span>{done ? <Check size={9} weight="bold" /> : index + 1}</span><small>{stage}</small></div>;
-    })}</div>
-  </div>;
 }
 
 function ProjectList({ onOpenDetail, notify }) {
   const [query, setQuery] = useState("");
   const [stage, setStage] = useState("全部阶段");
   const projects = useMemo(() => PROJECTS.filter((project) => `${project.name}${project.order}${project.keyword}`.toLowerCase().includes(query.toLowerCase()) && (stage === "全部阶段" || getProjectStageLabel(project) === stage)), [query, stage]);
-  return <section className="page-section project-page">
-    <div className="page-heading"><div><p className="eyebrow">GEO OPERATIONS</p><h1>GEO项目</h1><p>围绕订单关键词管理内容生成、媒体发布和最终效果。</p></div><div className="heading-actions">
-      <label className="search-control"><MagnifyingGlass size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索项目名称 / 订单号 / 关键词" /></label>
-      <label className="select-control"><FunnelSimple size={16} /><select value={stage} onChange={(event) => setStage(event.target.value)}><option>全部阶段</option>{[...STAGES, "已完成"].map((item) => <option key={item}>{item}</option>)}</select></label>
+  return <section className="page-section project-page geo-project-list">
+    <div className="page-heading"><div><p className="eyebrow">GEO WORKSPACE</p><h1>GEO项目</h1></div><div className="heading-actions">
+      <label className="search-control"><MagnifyingGlass size={17} /><input aria-label="搜索项目" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索项目名称 / 订单号 / 关键词" /></label>
+      <label className="select-control"><FunnelSimple size={16} /><select aria-label="筛选项目阶段" value={stage} onChange={(event) => setStage(event.target.value)}><option>全部阶段</option>{[...STAGES, "已完成"].map((item) => <option key={item}>{item}</option>)}</select></label>
       <button className="primary-button" onClick={() => notify("已创建一个空白 GEO 项目草稿")}><Plus size={17} />新建项目</button>
     </div></div>
-    <div className="project-table-shell" aria-label="GEO项目列表">
-      <table className="project-list-table">
-        <thead><tr><th>项目 / 订单</th><th>关键词</th><th>文章</th><th>投放媒体</th><th>项目进展</th></tr></thead>
-        <tbody>{projects.map((project) => {
-          const keywords = getProjectKeywords(project);
-          return <tr key={project.id}>
-            <td><button className="project-table-name" onClick={() => onOpenDetail(project.id)}><span className="project-table-icon"><FolderSimple size={17} /></span><span><strong>{project.name}</strong><small>{project.order}</small></span></button></td>
-            <td><div className="project-table-keywords"><div>{keywords.slice(0, 3).map((keyword) => <span title={keyword} key={keyword}>{keyword}</span>)}</div><small>共 {project.keywordCount} 个关键词</small></div></td>
-            <td><div className="project-table-number"><strong>{project.content[0]}</strong><span>篇</span></div></td>
-            <td><div className="project-table-number"><strong>{project.media[0]}</strong><span>家</span></div></td>
-            <td><ProjectTableTimeline project={project} /></td>
-          </tr>;
-        })}</tbody>
-      </table>
-      {!projects.length ? <div className="project-table-empty">没有符合筛选条件的项目</div> : null}
-    </div>
-    <div className="table-footer"><span>共 12 个项目</span><div className="pagination"><button disabled>‹</button><button className="active">1</button><button>2</button><button>›</button></div></div>
+    <div className="geo-project-card-grid" aria-label="GEO项目列表">{projects.map((project) => <ProjectCard key={project.id} project={project} onOpenDetail={onOpenDetail} />)}</div>
+    {!projects.length ? <div className="geo-project-empty" role="status">没有符合筛选条件的项目</div> : null}
+    <div className="table-footer"><span>共 {projects.length} 个项目</span></div>
   </section>;
 }
 
