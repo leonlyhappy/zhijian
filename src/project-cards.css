@@ -3,12 +3,13 @@
 .geo-project-list .heading-actions { flex-wrap: wrap; }
 .geo-project-list .geo-project-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 16px; }
 .geo-project-list .geo-project-card { min-width: 0; position: relative; isolation: isolate; display: flex; flex-direction: column; padding: 18px; background: #fff; border: 1px solid #e3ece7; border-radius: 10px; transition: transform .2s cubic-bezier(.2,.7,.3,1), border-color .2s ease, box-shadow .2s ease; }
-.geo-project-list .geo-project-card:focus-within { outline: 2px solid #23856b; outline-offset: 3px; border-color: #5ca78b; }
 @media (hover: hover) and (pointer: fine) {
   .geo-project-list .geo-project-card:hover { transform: translateY(-4px); border-color: #5ca78b; box-shadow: 0 10px 24px rgba(24, 91, 66, .11), 0 0 0 1px rgba(35, 133, 107, .12); }
   .geo-project-list .geo-project-card:hover h2 button { color: #147d5f; }
-  .geo-project-list .geo-project-card:active { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(24, 91, 66, .09); }
+  .geo-project-list .geo-project-card:active { transform: translateY(-1px); }
 }
+/* Match the strategy canvas's active keyword ring for pointer and keyboard use. */
+.geo-project-list .geo-project-card:is(:focus-within, :active) { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(8,174,127,.11), 0 9px 22px rgba(16,102,77,.1); }
 .geo-project-list .geo-project-card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #7d8d85; font-size: 13px; }
 .geo-project-list .geo-project-stage { display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0; color: #147d5f; font-size: 13px; font-weight: 600; }
 .geo-project-list .geo-project-stage i { width: 7px; height: 7px; background: currentColor; border-radius: 50%; }
