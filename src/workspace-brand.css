@@ -3,16 +3,16 @@
 .workspace-brand-controls .workspace-assistant-button img { display: block; width: 24px; height: 24px; border-radius: 50%; object-fit: cover; background: #edf6f0; }
 .workspace-brand-controls .workspace-assistant-button:hover, .workspace-brand-controls .workspace-assistant-button.active { background: #f1f8f4; border-color: #bfdccb; color: #147d5f; }
 .workspace-brand-controls .education-brand-button { display: flex; align-items: center; flex: 0 0 auto; height: 36px; padding: 0; border: 0; border-radius: 6px; background: transparent; cursor: pointer; }
-.workspace-brand-controls .education-brand-artwork { display: block; position: relative; width: 144px; aspect-ratio: 1611 / 496; overflow: hidden; }
+.workspace-brand-controls .education-brand-artwork { display: block; position: relative; width: 115.2px; aspect-ratio: 1611 / 496; overflow: hidden; }
 /* Show the chosen PNG's artwork without its transparent safety margins. */
 .workspace-brand-controls .education-brand-artwork img { display: block; position: absolute; width: 134.8231%; height: auto; max-width: none; left: -17.56797%; top: -25%; }
 .workspace-brand-controls .education-brand-button:hover { opacity: .88; }
-@media (max-width: 1000px) { .workspace-brand-controls { gap: 10px; } .workspace-brand-controls .education-brand-artwork { width: 132px; } }
-@media (max-width: 700px) { .workspace-brand-controls .education-brand-artwork { width: 122px; } }
+@media (max-width: 1000px) { .workspace-brand-controls { gap: 10px; } .workspace-brand-controls .education-brand-artwork { width: 105.6px; } }
+@media (max-width: 700px) { .workspace-brand-controls .education-brand-artwork { width: 97.6px; } }
 @media (max-width: 520px) {
   .workspace-brand-controls { gap: 6px; }
   .workspace-brand-controls .workspace-assistant-button { width: 34px; padding: 0; }
   .workspace-brand-controls .workspace-assistant-button > span { display: none; }
-  .workspace-brand-controls .education-brand-artwork { width: 112px; }
+  .workspace-brand-controls .education-brand-artwork { width: 89.6px; }
 }
 @media (prefers-reduced-motion: reduce) { .workspace-brand-controls .workspace-assistant-button { transition: none; } }
