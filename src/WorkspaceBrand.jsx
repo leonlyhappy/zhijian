@@ -7,7 +7,10 @@ export function WorkspaceBrand({ assistant, onHome }) {
       <span>问小智</span>
     </button> : null}
     <button type="button" className="education-brand-button" aria-label="360智见教育版，返回首页" onClick={onHome}>
-      <span className="education-brand-artwork" aria-hidden="true"><img src="/brand/zhijian-education-book.png" alt="" width="2172" height="724" /></span>
+      <span className="education-brand-artwork" aria-hidden="true">
+        <span className="education-brand-piece education-brand-icon"><img src="/brand/zhijian-education-book.png" alt="" width="2172" height="724" /></span>
+        <span className="education-brand-piece education-brand-lettering"><img src="/brand/zhijian-education-book.png" alt="" width="2172" height="724" /></span>
+      </span>
     </button>
   </div>;
 }
