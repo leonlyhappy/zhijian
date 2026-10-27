@@ -1,6 +1,7 @@
 import { GeoAssistant } from "./GeoAssistant.jsx";
 import { WorkspaceBrand } from "./WorkspaceBrand.jsx";
 import "./project-cards.css";
+import { AccountMenu } from "./AccountMenu.jsx";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Article, ArrowDown, ArrowLeft, ArrowRight, ArrowSquareOut, ArrowUp, At, Bell, Buildings, CalendarBlank, CaretDown, CaretLeft,
@@ -1358,7 +1359,7 @@ export function App() {
   else if (secondary === "发布") content = <PublishTasks notify={notify} />;
   else content = <Statistics tab={tertiary.统计} projectId={projectId} />;
   return <div className={cx("app-frame", primary === "首页" && "home-active")}>
-    <aside className="primary-rail"><button className="brand-mark" aria-label="智见新版" onClick={() => setPrimary("首页")}><Sparkle size={24} weight="fill" /><span>智见</span><small>新版</small></button><nav aria-label="一级导航">{PRIMARY_NAV.map(([label, Icon]) => <button className={cx("rail-item", primary === label && "active")} onClick={() => { setPrimary(label); setManagementScope(null); if (label === "GEO") { setSecondary("项目"); setProjectView("list"); } }} key={label}><Icon size={22} weight={primary === label ? "fill" : "regular"} /><span>{label}</span></button>)}</nav></aside>
+    <aside className="primary-rail"><div className="account-rail-slot"><AccountMenu /></div><nav aria-label="一级导航">{PRIMARY_NAV.map(([label, Icon]) => <button className={cx("rail-item", primary === label && "active")} onClick={() => { setPrimary(label); setManagementScope(null); if (label === "GEO") { setSecondary("项目"); setProjectView("list"); } }} key={label}><Icon size={22} weight={primary === label ? "fill" : "regular"} /><span>{label}</span></button>)}</nav></aside>
     <main className="app-main">{primary === "首页" ? content : primary === "GEO" ? <>
       <header className="secondary-bar"><nav aria-label="GEO二级导航">{SECONDARY_NAV.map(([label, Icon]) => <button className={cx(secondary === label && "active")} onClick={() => { setManagementScope(null); setSecondary(label); if (label === "项目") setProjectView("list"); }} key={label}><Icon size={17} /><span>{label}</span></button>)}</nav><HeaderActions /></header>
       <div className="geo-workspace">
